@@ -1,5 +1,4 @@
-import csv
-import os
+import utils.save
 from werkzeug.security import generate_password_hash
 
 class Person:
@@ -87,6 +86,7 @@ class Admin(Person):
         """" Initialize """
         super().__init__(id, name, age, phone_number)
         self.password = password
+        utils.save.admin_file(self)
 
     # set property for Staff password
     @property
