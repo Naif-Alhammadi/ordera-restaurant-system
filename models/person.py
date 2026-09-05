@@ -1,3 +1,7 @@
+import csv
+import os
+from werkzeug.security import generate_password_hash
+
 class Person:
     """" Represent a person with ID, name, age, and phone number """
 
@@ -65,6 +69,8 @@ class Person:
         spilted_phone_number = phone_number.split()
         if spilted_phone_number[0] != "+967" or spilted_phone_number[1][0:1] != "7":
             raise ValueError("Number must have this format +967 7xx xxx xxx")
+        
+        self._phone_number = phone_number
 
 
     # check Person age validation
@@ -72,6 +78,28 @@ class Person:
     def is_valid_age(age):
         if age >= 0 and age < 100:
             return True
+
+
+class Admin(Person):
+    """" Represent an administrator with a password """
+
+    def __init__(self, id, name, age, phone_number, password):
+        """" Initialize """
+        super().__init__(id, name, age, phone_number)
+        self.password = password
+
+    # set property for Staff password
+    @property
+    def password(self):
+        return self._password
+
+    @password.setter
+    def password(self, password):
+        for letter in password:
+            if letter in [" "]:
+                raise ValueError("Password must not contain spaces")
+            
+        self._password = generate_password_hash(password)
 
 
 def main():
