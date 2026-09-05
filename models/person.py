@@ -42,7 +42,7 @@ class Person:
         if len(phone_number) != 16:
             raise ValueError("Number must have this format +967 7xx xxx xxx")
         spilted_phone_number = phone_number.split()
-        if spilted_phone_number[0] != "+967" or spilted_phone_number[1] != "774":
+        if spilted_phone_number[0] != "+967" or spilted_phone_number[1][0:1] != "7":
             raise ValueError("Number must have this format +967 7xx xxx xxx")
 
 
@@ -54,7 +54,7 @@ class Person:
 
 
 def main():
-    naif = Person(1, "naif natheer", -1, "+967 774 556 789")
+    naif = Person(1, "naif natheer", 21, "+967 774 556 789")
     Person.is_valid_age(naif.age)
 
 
