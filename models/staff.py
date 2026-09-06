@@ -1,5 +1,4 @@
 from models.person import Person
-import utils.save
 
 class Staff(Person):
     """" Represent Staff class a subclass of Person that additionally take password """
@@ -22,7 +21,7 @@ class Staff(Person):
         self._experience = experience
 
     def send_application(self, message):
-        utils.save.employees_application(self, message)
+        ...
 
     def account(self):
         ...

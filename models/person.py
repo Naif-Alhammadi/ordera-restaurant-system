@@ -1,4 +1,3 @@
-import utils.save
 from werkzeug.security import generate_password_hash
 
 class Person:
@@ -19,10 +18,10 @@ class Person:
 
     @id.setter
     def id(self, id):
-        if id < 0:
+        if int(id) < 0:
             raise ValueError("id must be greater than 0")
 
-        self._id = id
+        self._id = int(id)
 
 
     # set property for Person name
@@ -49,10 +48,10 @@ class Person:
 
     @age.setter
     def age(self, age):
-        if not Person.is_valid_age(age):
+        if not Person.is_valid_age(int(age)):
             raise ValueError("age must be greater than 0 and less than 100")
 
-        self._age = age 
+        self._age = int(age)
 
             
     # set property for Person phone number
@@ -82,11 +81,10 @@ class Person:
 class Admin(Person):
     """" Represent an administrator with a password """
 
-    def __init__(self, id, name, age, phone_number, password):
+    def __init__(self, name, age, phone_number, password, id=1):
         """" Initialize """
         super().__init__(id, name, age, phone_number)
         self.password = password
-        utils.save.admin_file(self)
 
     # set property for Staff password
     @property
@@ -101,6 +99,13 @@ class Admin(Person):
             
         self._password = generate_password_hash(password)
 
+    @classmethod
+    def get(cls):
+        name = input("Enter your name: ")
+        age = input("Enter your age: ")
+        phone_number = input("Enter your phone number: ")
+        password = input("Enter your password")
+        return cls(name, age, phone_number, password)
 
 def main():
     naif = Person(1, "naif natheer", 21, "+967 774 556 789")
