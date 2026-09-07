@@ -3,6 +3,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from models.person import Admin
 import os
 
+PASSWORD = 123
+
 class Reject(BaseException):
     def __init__(self, message):
         super().__init__(message)
@@ -20,16 +22,19 @@ class Storage:
 
         name = input("Enter Your Name: ")
         password = input("Enter Your Password: ")
+        program_passwrod = input("Enter The Program Password: ")
         for line in data:
-            if line["admin"] == name:
-                if check_password_hash(line["hash"], password):
-                    age = line["age"]
-                    ID = line["ID"]
-                    phone_number = line["phone"]
-                    return Admin(name, age, phone_number, password, ID)
+            if int(program_passwrod) == PASSWORD:
+                if line["admin"] == name:
+                    if check_password_hash(line["hash"], password):
+                        age = line["age"]
+                        ID = line["ID"]
+                        phone_number = line["phone"]
+                        return Admin(name, age, phone_number, password, ID)
 
-        # Return expetion will be add later
+        # Return expetion if Admin not found in the file
         else:
+            print("There is no Admin named like that")
             raise Reject("There is no Admin named like that")
             
 
