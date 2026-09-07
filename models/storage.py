@@ -3,6 +3,10 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from models.person import Admin
 import os
 
+class Reject(BaseException):
+    def __init__(self, message):
+        super().__init__(message)
+
 class Storage:
     @staticmethod
     def load_admin(path):
@@ -10,15 +14,9 @@ class Storage:
             with open(path, "r") as file:
                 reader = csv.DictReader(file)
                 data = list(reader)
-                print(data)
 
         except FileNotFoundError:
-            register = print("you are not registered do you want to register? yes/no : ")
-            if register.lower() in ["yes", "y"]:
-                Storage.save_admin(Admin)
-                return Admin.get()
-
-            return None
+            raise Reject("request has been rejected")
 
         name = input("Enter Your Name: ")
         password = input("Enter Your Password: ")
@@ -28,11 +26,11 @@ class Storage:
                     age = line["age"]
                     ID = line["ID"]
                     phone_number = line["phone"]
-                    print("welcom")
                     return Admin(name, age, phone_number, password, ID)
 
         # Return expetion will be add later
-        raise ...
+        else:
+            raise Reject("There is no Admin named like that")
             
 
     @staticmethod
@@ -41,7 +39,7 @@ class Storage:
         with open("uploads/admins", "w") as file:
             writer = csv.DictWriter(file, fieldnames=["ID", "admin", "age", "phone", "hash"])
             writer.writeheader()
-            writer.writerow({"ID": admin._id,"admin": admin._name, "phone": admin._phone_number,"hash": admin._password})
+            writer.writerow({"ID": admin.id,"admin": admin.name, "age": admin.age, "phone": admin.phone_number,"hash": admin.password})
 
 
     # @staticmethod
