@@ -13,9 +13,12 @@ def main():
 
     while True:
         actores_in_rest()
-        actor = input("please choose your turn: ")
+        actor = input("please choose your turn: ").lower()
         if actor in ["admin", "1"]:
             actor = "admin"
+            choose_user(actor)
+        elif actor in ["employee", "2"]:
+            actor = "employee"
             choose_user(actor)
         elif actor in ["exit", "4"]:
             print("See you 👋🏼")
@@ -25,17 +28,20 @@ def main():
 def choose_user(actor):
     match actor.lower():
         case "admin" | "1":
-            display()
             while True:
+                display() 
                 choice = input("Enter what you want: ")
-                if choice in ["back", "3"]:
+                if choice in ["back", "4"]:
                     break
-
-                display_admin_cases(choice)
+                admin = display_admin_cases(choice)
                 
             
         case "employee" | "2":
-            pass
+            while True:
+                display_employee_choices()
+                choice = input("Enter what you want: ")
+                if choice.lower() in ["back", 3]:
+                    break
         case "customer" | "3":
             pass
         case _:
@@ -51,8 +57,29 @@ def display():
     print("\n--- Admin Menu ---")
     print("1. Login")
     print("2. Register")
+    print("3. Show Employees Application")
+    print("4. Back")
+    print("5. Exit")
+
+
+def display_employee_choices():
+    print("\n--- Employee Menu ---")
+    print("1. Send Application")
+    print("2. Show Application Status")
     print("3. Back")
     print("4. Exit")
+
+
+def employee_cases(choice):
+    choice.lower()
+    match choice:
+        case "send application" | "1":
+            
+            Storage.save_employees_application()
+        case "show status" | "2":
+            pass
+        case "exis" | "4":
+            sys.exit(0)
 
 def display_admin_cases(choice):
     choice.lower()
@@ -61,7 +88,10 @@ def display_admin_cases(choice):
             return login("admin")
         case "register" | "2":
             return register("admin")
-        case "exit" | "4":
+        case "Show Employees Application" | "3":
+            return Storage.load_employees_application()
+        
+        case "exit" | "5":
             sys.exit(0)
 
 
@@ -72,9 +102,10 @@ def register(actor):
             Storage.save_admin(admin)
             print("You are all set you can Login!")
             return admin
-    
+
 
 def login(actor):
+
     if actor == "admin":
             try:
                 return Storage.load_admin("uploads/admins")
@@ -82,7 +113,7 @@ def login(actor):
                 register = input("You are not registered yet, Please register first. Register? yes/no : ")
     
                 if register.lower() in ["yes", "y"]:    
-                    return login("admin")
+                    return register("admin")
                 else:
                     return choose_user("admin")
 

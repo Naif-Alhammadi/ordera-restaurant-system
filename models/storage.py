@@ -22,15 +22,13 @@ class Storage:
 
         name = input("Enter Your Name: ")
         password = input("Enter Your Password: ")
-        program_passwrod = input("Enter The Program Password: ")
         for line in data:
-            if int(program_passwrod) == PASSWORD:
-                if line["admin"] == name:
-                    if check_password_hash(line["hash"], password):
-                        age = line["age"]
-                        ID = line["ID"]
-                        phone_number = line["phone"]
-                        return Admin(name, age, phone_number, password, ID)
+            if line["admin"] == name:
+                if check_password_hash(line["hash"], password):
+                    age = line["age"]
+                    ID = line["ID"]
+                    phone_number = line["phone"]
+                    return Admin(name, age, phone_number, password, ID)
 
         # Return expetion if Admin not found in the file
         else:
@@ -41,16 +39,44 @@ class Storage:
     @staticmethod
     def save_admin(admin):
         os.makedirs("uploads", exist_ok=True)
-        with open("uploads/admins", "w") as file:
+        with open("uploads/admins", "a") as file:
             writer = csv.DictWriter(file, fieldnames=["ID", "admin", "age", "phone", "hash"])
+            writer.writeheader()                        
+            program_passwrod = input("Enter The Program Password: ")
+            if int(program_passwrod) == PASSWORD:
+                writer.writerow({"ID": admin.id,"admin": admin.name, "age": admin.age, "phone": admin.phone_number,"hash": admin.password})
+
+    @staticmethod
+    def load_employees_application():
+        try:
+            with open("uploads/employees_application", "r") as file:
+                reader = csv.DictReader(file)
+                application = list(reader)
+
+        except FileNotFoundError:
+            raise FileNotFoundError("not found") 
+
+        return application
+        
+
+
+    @staticmethod
+    def employees_application(employee):
+        os.makedirs("uploads", exist_ok=True)
+        with open("uploads/employees_application", "w") as file:
+            writer = csv.DictWriter(file, fieldnames=["name", "age", "experience", "message", "status"])
             writer.writeheader()
-            writer.writerow({"ID": admin.id,"admin": admin.name, "age": admin.age, "phone": admin.phone_number,"hash": admin.password})
+            writer.writerow({"name": employee.name, "age": employee.age, "experience": employee.experience, "message": employee.message, "status": employee.status})
 
+    @staticmethod
+    def save_employees_application(employee):
+        os.makedirs("upload", exist_ok=True)
+        with open("upload/employees_application", "a") as file:
+            writer = csv.DictWriter(file, fieldnames=["name", "age" , "experience" , "message", "status"])
+            writer.writerow({"name": employee.name, "age": employee.age, "experience": employee.experience, "message": employee.message, "status": employee.status})
 
-    # @staticmethod
-    # def employees_application(sender, message, application_status = "pending"):
-    #     os.makedirs("uploads", exist_ok=True)
-    #     with open("uploads/employees_application", "w") as file:
-    #         writer = csv.DictWriter(file, fieldnames=["name", "age", "experience", "message", "status"])
-    #         writer.writeheader()
-    #         writer.writerow({"name": sender.name, "age": sender.age, "experience": sender.experience, "message": message, "status": application_status})
+        @staticmethod
+        def update_employees_application(updated_application):
+            with open("upload/employees_application", "w") as file:
+                writer = csv.DictWriter(file, fieldnames=["name", "age" , "experience" , "message", "status"])
+                writer.writerow({{"name": employee.name, "age": employee.age, "experience": employee.experience, "message": employee.message, "status": employee.status}})

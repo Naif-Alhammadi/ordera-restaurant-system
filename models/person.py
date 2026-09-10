@@ -1,4 +1,6 @@
 from werkzeug.security import generate_password_hash
+import csv
+import random
 
 class Person:
     """" Represent a person with ID, name, age, and phone number """
@@ -71,6 +73,25 @@ class Person:
         self._phone_number = phone_number
 
 
+    @staticmethod
+    def set_id():
+        ids = []
+        with open("uploads/ids", "r") as file:
+            reader = csv.reader(file)
+            ids_file = list(reader)
+            id = random.choice(ids_file[0])
+
+            for num in ids_file[0]:
+                if int(num) == int(id):
+                    continue
+                ids.append(num)
+
+        with open("uploads/ids", "w") as file:
+            writer = csv.writer(file)
+            writer.writerow(ids)
+
+        return id
+
     # check Person age validation
     @staticmethod
     def is_valid_age(age):
@@ -99,13 +120,28 @@ class Admin(Person):
             
         self._password = generate_password_hash(password)
 
+    
+    def register_employees(self, applications):
+        update_application = []
+        for application in applications:
+            print(application)
+            apply = print("Apply? ")
+            if apply.lower() in ["yes", "y"]:
+                application["status"] = "accepted"
+                update_application.append(application)
+            elif apply.lower() in ["no", "n"]:
+                application["status"] = "rejected"
+                update_application.append(application)
+        
+
     @classmethod
     def get(cls):
         name = input("Enter your name: ")
         age = input("Enter your age: ")
         phone_number = input("Enter your phone number: ")
-        password = input("Enter your password")
-        return cls(name, age, phone_number, password)
+        password = input("Enter your password: ")
+        id = Person.set_id()
+        return cls(name, age, phone_number, password, id)
 
 def main():
     naif = Person(1, "naif natheer", 21, "+967 774 556 789")
