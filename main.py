@@ -4,36 +4,35 @@ import sys
 from models.staff import Staff
 from models.person import Admin
 from models.storage import Storage
-from models.storage import Reject
-
 
 def main():
     print("welcome to Ordera! \na Full Restaurant System \nPlease just wait a second the System is starting up!")
     time.sleep(1)
 
     while True:
-        actores_in_rest()
+        display_actores_in_rest()
         actor = input("please choose your turn: ").lower()
         if actor in ["admin", "1"]:
             actor = "admin"
-            choose_user(actor)
+            user_choice(actor)
         elif actor in ["employee", "2"]:
             actor = "employee"
-            choose_user(actor)
+            user_choice(actor)
         elif actor in ["exit", "4"]:
             print("See you 👋🏼")
-            break
+            sys.exit(0)
 
 
-def choose_user(actor):
+def user_choice(actor):
     match actor.lower():
         case "admin" | "1":
             while True:
-                display() 
+                Admin.display()
                 choice = input("Enter what you want: ")
-                if choice in ["back", "4"]:
+                if choice in ["back", "5"]:
                     break
-                admin = display_admin_cases(choice)
+                admin = Admin.display_admin_cases(choice, Storage)
+                print(admin)
                 
             
         case "employee" | "2":
@@ -47,19 +46,11 @@ def choose_user(actor):
         case _:
             print("Invalid Option")
 
-def actores_in_rest():
+def display_actores_in_rest():
     print("\n1. Admin")
     print("2. Employee")
     print("3. Customer")
     print("4. Exit")
-
-def display():
-    print("\n--- Admin Menu ---")
-    print("1. Login")
-    print("2. Register")
-    print("3. Show Employees Application")
-    print("4. Back")
-    print("5. Exit")
 
 
 def display_employee_choices():
@@ -80,42 +71,6 @@ def employee_cases(choice):
             pass
         case "exis" | "4":
             sys.exit(0)
-
-def display_admin_cases(choice):
-    choice.lower()
-    match choice:
-        case "login" | "1":
-            return login("admin")
-        case "register" | "2":
-            return register("admin")
-        case "Show Employees Application" | "3":
-            return Storage.load_employees_application()
-        
-        case "exit" | "5":
-            sys.exit(0)
-
-
-
-def register(actor):
-    if actor == "admin":
-            admin = Admin.get()
-            Storage.save_admin(admin)
-            print("You are all set you can Login!")
-            return admin
-
-
-def login(actor):
-
-    if actor == "admin":
-            try:
-                return Storage.load_admin("uploads/admins")
-            except Reject:
-                register = input("You are not registered yet, Please register first. Register? yes/no : ")
-    
-                if register.lower() in ["yes", "y"]:    
-                    return register("admin")
-                else:
-                    return choose_user("admin")
 
 
 if __name__ == "__main__":

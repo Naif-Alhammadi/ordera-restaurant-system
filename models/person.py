@@ -1,6 +1,12 @@
 from werkzeug.security import generate_password_hash
 import csv
 import random
+import sys
+
+
+class doesNotExit(BaseException):
+    def __init__(self, message):
+        super().__init__(message)
 
 class Person:
     """" Represent a person with ID, name, age, and phone number """
@@ -92,6 +98,21 @@ class Person:
 
         return id
 
+    @staticmethod
+    def register():
+        pass
+
+    @staticmethod
+    def login():
+        pass
+
+    @staticmethod
+    def display():
+        pass
+
+
+    
+
     # check Person age validation
     @staticmethod
     def is_valid_age(age):
@@ -120,19 +141,66 @@ class Admin(Person):
             
         self._password = generate_password_hash(password)
 
-    
-    def register_employees(self, applications):
+
+    @staticmethod
+    def register(storage):
+        if storage.save_admin(Admin.get()):
+            print("You are Registered you can Login!")
+            return
+        return False
+
+    @staticmethod
+    def login(storage):
+        try:
+            return storage.load_admin("uploads/admins")
+        except ValueError:
+            print("You are not registered yet, Please register first.")
+            raise doesNotExit("Admin does not exit")
+
+    @staticmethod
+    def display():
+        print("\n--- Admin Menu ---")
+        print("1. Login")
+        print("2. Register")
+        print("3. Show Employees Applications")
+        print("4. Accept/Reject Employees Applicatons")
+        print("5. Back")
+        print("6. Exit")
+
+
+    @staticmethod
+    def display_admin_cases(choice, storage):
+        choice.lower()
+        match choice:
+            case "login" | "1":
+                return Admin.login(storage)
+            case "register" | "2":
+                return Admin.register(storage)
+            case "Show Employees Application" | "3":
+                return storage.load_employees_application()
+            case "Register Employees" | "4":
+                return Admin.register_employees(storage)
+        
+            case "exit" | "6":
+                sys.exit(0)
+            
+    @staticmethod
+    def register_employees(storage):
+        applications = storage.load_employees_application()
         update_application = []
         for application in applications:
             print(application)
-            apply = print("Apply? ")
+            apply = input("Apply? ")
             if apply.lower() in ["yes", "y"]:
                 application["status"] = "accepted"
                 update_application.append(application)
             elif apply.lower() in ["no", "n"]:
                 application["status"] = "rejected"
                 update_application.append(application)
-        
+            else:
+                update_application.append(application)
+            storage.update_employees_application(update_application)
+    
 
     @classmethod
     def get(cls):
