@@ -50,17 +50,18 @@ class Storage:
             with open("uploads/employees_application", "r") as file:
                 reader = csv.DictReader(file)
                 application = list(reader)
+                print(application)
 
         except FileNotFoundError:
             raise FileNotFoundError("not found") 
-
         return application
 
     @staticmethod
     def save_employees_application(employee):
-        os.makedirs("upload", exist_ok=True)
-        with open("upload/employees_application", "a") as file:
+        os.makedirs("uploads", exist_ok=True)
+        with open("uploads/employees_application", "a") as file:
             writer = csv.DictWriter(file, fieldnames=["name", "age" , "experience" , "message", "status"])
+            writer.writeheader()
             writer.writerow({"name": employee.name, "age": employee.age, "experience": employee.experience, "message": employee.message, "status": employee.status})
 
     @staticmethod

@@ -18,7 +18,7 @@ def main():
         elif actor in ["employee", "2"]:
             actor = "employee"
             user_choice(actor)
-        elif actor in ["exit", "4"]:
+        elif actor in ["exit", "3"]:
             print("See you 👋🏼")
             sys.exit(0)
 
@@ -36,11 +36,15 @@ def user_choice(actor):
                 
             
         case "employee" | "2":
+            
             while True:
-                display_employee_choices()
+                Staff.display_employee_choices()
                 choice = input("Enter what you want: ")
                 if choice.lower() in ["back", 3]:
                     break
+                
+                Staff.employee_cases(choice)
+
         case "customer" | "3":
             pass
         case _:
@@ -49,28 +53,7 @@ def user_choice(actor):
 def display_actores_in_rest():
     print("\n1. Admin")
     print("2. Employee")
-    print("3. Customer")
-    print("4. Exit")
-
-
-def display_employee_choices():
-    print("\n--- Employee Menu ---")
-    print("1. Send Application")
-    print("2. Show Application Status")
-    print("3. Back")
-    print("4. Exit")
-
-
-def employee_cases(choice):
-    choice.lower()
-    match choice:
-        case "send application" | "1":
-            
-            Storage.save_employees_application()
-        case "show status" | "2":
-            pass
-        case "exis" | "4":
-            sys.exit(0)
+    print("3. Exit")
 
 
 if __name__ == "__main__":
