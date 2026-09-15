@@ -1,3 +1,4 @@
+from models.address import Address
 from werkzeug.security import generate_password_hash
 import csv
 import random
@@ -9,28 +10,13 @@ class doesNotExit(BaseException):
         super().__init__(message)
 
 class Person:
-    """" Represent a person with ID, name, age, and phone number """
+    """" Represent a person with name, age, and phone number """
 
-    def __init__(self, id, name, age, phone_number):
-        """" Initialize a Person with an ID, name, age, and phone number """
-        self.id = id
+    def __init__(self, name, age, phone_number, address):
         self.name = name
         self.age = age
         self.phone_number = phone_number
-
-
-    # set property for Person ID
-    @property
-    def id(self):
-        return self._id
-
-    @id.setter
-    def id(self, id):
-        if int(id) < 0:
-            raise ValueError("id must be greater than 0")
-
-        self._id = int(id)
-
+        self.address = address
 
     # set property for Person name
     @property
@@ -79,39 +65,17 @@ class Person:
         self._phone_number = phone_number
 
 
-    @staticmethod
-    def set_id():
-        ids = []
-        with open("uploads/ids", "r") as file:
-            reader = csv.reader(file)
-            ids_file = list(reader)
-            id = random.choice(ids_file[0])
-
-            for num in ids_file[0]:
-                if int(num) == int(id):
-                    continue
-                ids.append(num)
-
-        with open("uploads/ids", "w") as file:
-            writer = csv.writer(file)
-            writer.writerow(ids)
-
-        return id
-
-    @staticmethod
-    def register():
-        pass
-
-    @staticmethod
-    def login():
-        pass
-
-    @staticmethod
-    def display():
-        pass
-
-
+    # set property for Person address
+    @property
+    def address(self):
+        return self._address
     
+    @address.setter
+    def address(self, address):
+        if not isinstance(address, Address):
+            raise ValueError("Invalid Address")
+        self._address = address
+
 
     # check Person age validation
     @staticmethod

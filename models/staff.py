@@ -11,7 +11,7 @@ class lengthError(BaseException):
 class Staff(Person):
     """" Represent Staff class a subclass of Person that additionally take password """
 
-    def __init__(self, id, name, age, phone_number, experience, message,status="pending"):
+    def __init__(self, name, age, phone_number, experience, message, id=999, status="pending"):
         """" Initialize """
         super().__init__(id, name, age, phone_number)
         self.experience = experience
