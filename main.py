@@ -1,7 +1,7 @@
 import time
 import os
 import sys
-from models.staff import Staff
+from models.employee import Staff
 from models.person import Admin
 from models.storage import Storage
 
