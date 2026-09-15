@@ -6,6 +6,7 @@ class User(Person):
     def __init__(self, name, age, phone_number, address, job, experience: str):
         super().__init__(name, age, phone_number, address)
         self.experience = experience
+        self.job = job
         self.application = Application(job, "pending")
 
 
