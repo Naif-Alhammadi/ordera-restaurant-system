@@ -1,5 +1,6 @@
 from models.employee import Employee
 from models.account import Account
+from models.customer import Customer
 
 class Cashier(Employee):
     def __init__(self, user, account, user_account=0):

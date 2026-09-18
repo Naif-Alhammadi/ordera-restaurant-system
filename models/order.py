@@ -1,8 +1,9 @@
 from models.menu.menu import Menu
 
 class Order:
-    def __init__(self, orders):
+    def __init__(self, orders, takeaway=True):
         self.order = orders
+        self.type = takeaway
         self.menu = Menu()
         # self.total_amount = 0
 
@@ -31,6 +32,11 @@ class Order:
                 total += self.menu.drink.get(order)
 
         return total
+
+    def dine_in(self):
+        if self.type:
+            return False
+        return True
 
 
 
