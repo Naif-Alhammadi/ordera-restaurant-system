@@ -59,7 +59,7 @@ class Employee(ABC):
 
         return id
 
-    # @abstractmethod
+    @abstractmethod
     def job(self):
         pass
 
