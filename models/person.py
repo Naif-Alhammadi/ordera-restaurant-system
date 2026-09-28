@@ -1,8 +1,5 @@
 from models.address import Address
 
-import csv
-import sys
-
 
 class doesNotExit(BaseException):
     def __init__(self, message):

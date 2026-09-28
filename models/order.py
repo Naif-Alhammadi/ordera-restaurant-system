@@ -21,7 +21,7 @@ class Order:
         for order in orders:
             if order.lower() not in self.menu.food and order.lower() not in self.menu.drink:
                 raise ValueError("Invalid Order")
-            return True
+        return True
 
     def total_amount(self, orders):
         total = 0

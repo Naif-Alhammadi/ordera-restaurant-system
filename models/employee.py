@@ -1,6 +1,5 @@
 from models.user import User
 from abc import ABC, abstractmethod
-import csv
 
 
 class lengthError(BaseException):
@@ -42,26 +41,18 @@ class Employee(ABC):
 
     @staticmethod
     def set_id():
-        ids = []
-        with open("uploads/ids", "r") as file:
-            reader = csv.reader(file)
-            ids_file = list(reader)
-            id = ids_file[0][0]
-
-            for num in ids_file[0]:
-                if int(num) == int(id):
-                    continue
-                ids.append(num)
-
-        with open("uploads/ids", "w") as file:
-            writer = csv.writer(file)
-            writer.writerow(ids)
+        ids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        id = ids[0]
+        ids.remove(id)
 
         return id
 
     @abstractmethod
     def job(self):
         pass
+
+    def __str__(self):
+        return f"name: {self.user}, has: {self.user_account}"
 
 
 

@@ -5,3 +5,6 @@ class Address:
         self.__city = city
         self.__country = country
         self.__street = street
+
+    def __str__(self):
+        return f"City: {self.__city}, Conutry: {self.__country}, Street: {self.__street}"
